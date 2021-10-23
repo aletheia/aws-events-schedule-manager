@@ -1,27 +1,40 @@
 {
-  "name": "",
-  "version": "0.0.0",
-  "description": "",
+  "name": "reinvent-2021-schedule-manager",
+  "version": "0.1.0",
+  "description": "Script to handle amazon reinvent 2021 personal schedule",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "files": [
     "build/src"
   ],
   "license": "Apache-2.0",
-  "keywords": [],
+  "keywords": [
+    "reinvent",
+    "aws"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "start": "ts-node app/index.ts"
   },
   "devDependencies": {
+    "@types/node": "^16.11.4",
     "gts": "^3.1.0",
-    "typescript": "^4.0.3",
-    "@types/node": "^14.11.2"
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "aws-amplify": "^4.3.3",
+    "aws-sdk": "^2.1013.0",
+    "axios": "^0.23.0",
+    "dotenv": "^10.0.0",
+    "ts-node": "^10.4.0"
   }
 }
