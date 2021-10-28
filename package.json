@@ -33,14 +33,12 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "ascii-art": "^1.5.1",
     "aws-amplify": "^4.3.3",
     "aws-sdk": "^2.1013.0",
     "axios": "^0.23.0",
     "chalk": "^4.1.2",
     "conf": "^10.0.3",
     "dotenv": "^10.0.0",
-    "figlet": "^1.5.2",
     "inquirer": "^8.2.0",
     "ts-node": "^10.4.0",
     "winston": "^3.3.3"
