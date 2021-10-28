@@ -27,10 +27,6 @@ export const configureCognito = async ({
   });
 };
 export const logIn = async (email: string, password: string) => {
-  try {
-    const user = await Auth.signIn(email, password);
-    console.log(user);
-  } catch (e) {
-    console.log(e);
-  }
+  const user = await Auth.signIn(email, password);
+  return user;
 };

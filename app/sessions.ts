@@ -1,6 +1,6 @@
 import {writeFileSync} from 'fs';
 
-export const saveSessions = async (sessions: any) => {
+export const saveSessions = async (sessions: any, filename: string) => {
   //   const {mySessions, myFavorites, myUserSessions} = sessions;
   const csvSanitize = (str: string) => str.replace(/,/g, '');
   const booked = sessions.items
@@ -29,5 +29,5 @@ export const saveSessions = async (sessions: any) => {
       })
       .join('\n');
 
-  writeFileSync('./booked.csv', csv);
+  writeFileSync(filename, csv);
 };

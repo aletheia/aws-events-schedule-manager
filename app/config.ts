@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Logger} from './logger';
 const configUrl = 'https://portal.awsevents.com/config/config.json';
 
 export interface AppConfig {
@@ -15,7 +16,8 @@ export interface AppConfig {
   };
 }
 
-export const downloadConfig = async () => {
+export const downloadConfig = async (logger: Logger) => {
+  logger.debug('Downloading config from ' + configUrl);
   const response = await axios.get(configUrl);
   return response.data as AppConfig;
 };

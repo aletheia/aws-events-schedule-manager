@@ -1,27 +1,29 @@
-# re:Invent 2021 Schedule Manager
-> A collection of script to handle the missing functionalities of re:Invent attendant portal
+# RESM -- re:Invent 2021 Schedule Manager
+> A command line tool to manage your schedule for re:Invent 2021.
 
 ## Introduction 
 This year re:Invent is going to be back in person with a [brand new portal](https://portal.awsevents.com/events/reInvent2021/dashboard)
-Script to handle amazon reinvent 2021 personal schedule
+Here are a series of utilities related to session handling.
 
+## Export Sessions to CSV
+Unfortunately, the portal does not allow to export booked sessions to a CSV file.
 
-## Getting started
+## How to use
 
-Check out the project from GitHub 
+Using the command line tool is super easy, just run the following command:
+
 ```bash
-git clone
+npm i -g resm
 ```
 
-Create a ```.env``` file with content
+then start the tool with the following command:
 
+```bash
+resm
 ```
-USERNAME = reinvent username
-PASSWORD = reinvent password 
-```
+and follow the instructions, entering your re:Invent porta **username** and **password** when prompted.
 
-Run the **start** script
-```
-npm install
-npm run start
-```
+![Cli01](./images/cli01.png)
+
+![Cli02](./images/cli02.png)
+

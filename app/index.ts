@@ -1,35 +1,68 @@
-import {configureCognito, logIn} from './auth';
-import {downloadConfig} from './config';
-import * as dotenv from 'dotenv';
-import {configureAppSync, fetchSessions} from './graphql';
-import {saveSessions} from './sessions';
+#! /usr/bin/env node
+import inquirer from 'inquirer';
+import {Logger} from './logger';
+import {saveUserBookedSessions} from './commands/save_sessions';
+import {exitProgram} from './commands/exit';
+import {AppConfig, downloadConfig} from './config';
+import {authenticateUser} from './commands/log_in_user';
 
-(async () => {
-  dotenv.config();
-  const username = process.env.USERNAME;
-  const password = process.env.PASSWORD;
+const init = async (config: AppConfig, logger: Logger) => {
+  let answers;
+  try {
+    logger.log('re:Invent 2021 - Sessions Manager');
+  } catch (e) {
+    const error = e as Error;
+    logger.error(error.message);
+  }
 
   try {
-    if (!username || !password) {
-      throw new Error('Missing username or password');
+    await authenticateUser(logger, config);
+    const saveUserSessionOption = 'Save user reserved sessions';
+    const exitOption = 'Exit';
+    answers = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'command',
+        message: 'What do you want to do?',
+        choices: [saveUserSessionOption, exitOption],
+      },
+    ]);
+
+    const doSaveSessions = async () => {
+      answers = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'fileName',
+          message: 'Enter the file name to save sessions to',
+        },
+      ]);
+      const fileName = answers.fileName;
+      if (fileName.length === 0) {
+        logger.error('File name cannot be empty');
+      }
+      await saveUserBookedSessions(logger, config, fileName);
+    };
+
+    switch (answers.command) {
+      case saveUserSessionOption:
+        await doSaveSessions();
+        break;
+      case 'Exit':
+        await exitProgram(logger);
     }
-    const config = await downloadConfig();
-    // console.log(config);
-    await configureCognito({
-      identityPoolId: config.publicWebApp.identityPoolId,
-      region: config.region,
-      identityPoolRegion: config.region,
-      userPoolId: config.cognito.userPoolId,
-      userPoolWebClientId: config.cognito.userPoolWebClientId,
-    });
-    await configureAppSync(config);
-
-    await logIn(username, password);
-
-    const sessions = await fetchSessions();
-    console.log(sessions);
-    await saveSessions(sessions);
   } catch (e) {
-    console.error(e);
+    const error = e as Error;
+    logger.error(error.message);
+  }
+};
+
+(async () => {
+  const logger = new Logger();
+  try {
+    const config = await downloadConfig(logger);
+    await init(config, logger);
+  } catch (e) {
+    const error = e as Error;
+    logger.error(error.message);
   }
 })();

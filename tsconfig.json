@@ -1,8 +1,19 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
+    "esModuleInterop": true,
+    "target": "ES2021",
+    "module": "CommonJS",
+    "allowJs": false,
+    "resolveJsonModule": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "noImplicitThis": true,
     "rootDir": ".",
-    "outDir": "build"
+    "outDir": "bin"
   },
   "include": ["app/**/*.ts", "test/**/*.ts"]
 }
