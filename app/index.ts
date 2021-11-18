@@ -35,12 +35,20 @@ const init = async (config: AppConfig, logger: Logger) => {
           name: 'fileName',
           message: 'Enter the file name to save sessions to',
         },
+        {
+          type: 'list',
+          name: 'format',
+          message: 'Enter the file format',
+          choices: ['CSV', 'ICS'],
+        },
       ]);
       const fileName = answers.fileName;
       if (fileName.length === 0) {
         logger.error('File name cannot be empty');
       }
-      await saveUserBookedSessions(logger, config, fileName);
+      const format = answers.format;
+
+      await saveUserBookedSessions(logger, config, fileName, format);
     };
 
     switch (answers.command) {
