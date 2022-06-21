@@ -29,10 +29,18 @@ export const fetchSessionsCommand = async (
   ]);
 
   const doFetchReservedSessions = async () => {
-    return await fetchReservedSessions(event);
+    const sessions = await fetchReservedSessions(event);
+    if (!sessions || sessions.length === 0) {
+      throw new Error('No reserved sessions found');
+    }
+    return sessions;
   };
   const doFetchBookmarkedSessions = async () => {
-    return await fetchBookmarkedSessions(event);
+    const sessions = await fetchBookmarkedSessions(event);
+    if (!sessions || sessions.length === 0) {
+      throw new Error('No bookmarked sessions found');
+    }
+    return sessions;
   };
 
   logger.info(chalk.blue('Fetching sessions..'));
