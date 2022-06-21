@@ -1,7 +1,7 @@
 {
   "name": "resm",
   "version": "1.0.0",
-  "description": "RESM: Script to handle amazon reinvent 2021 personal schedule",
+  "description": "RESM: Script to handle AWS Events personal schedule",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "license": "Apache-2.0",
