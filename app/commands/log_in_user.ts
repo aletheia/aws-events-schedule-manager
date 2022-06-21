@@ -2,11 +2,13 @@ import inquirer from 'inquirer';
 import {configureCognito, logIn} from '../auth';
 import {AppConfig} from '../config';
 import {Logger} from '../logger';
-import {Command, CommandConfig} from './Command';
 
-export const authenticateUser = async (logger: Logger, config: AppConfig) => {
+export const authenticateUserCommand = async (
+  logger: Logger,
+  config: AppConfig
+) => {
   logger.debug(
-    'Logging into re:Invent portal with your registered username and password'
+    'Logging into AWS Events portal with your registered username and password'
   );
 
   const answers = await inquirer.prompt([
@@ -39,7 +41,7 @@ export const authenticateUser = async (logger: Logger, config: AppConfig) => {
   });
 
   const loggedInUser = await logIn(username, password);
-  logger.info(
-    `Welcome back ${loggedInUser.attributes.given_name} ${loggedInUser.attributes.family_name}`
-  );
+
+  logger.info(`Welcome back ${loggedInUser.name} ${loggedInUser.surname}`);
+  return loggedInUser;
 };

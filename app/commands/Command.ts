@@ -4,8 +4,8 @@ export interface CommandConfig {
   logger?: Logger;
 }
 
-export interface Command {
-  commandName: () => string;
-  question: () => {name: string; value: string};
-  run: (config?: CommandConfig) => Promise<void>;
+export interface CommandInterface {
+  commandName(): string;
+  prompt(): {name: string; value: string};
+  execute(config?: CommandConfig): Promise<void>;
 }
