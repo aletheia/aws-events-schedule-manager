@@ -1,4 +1,5 @@
 import Amplify, {Auth} from 'aws-amplify';
+import {User} from './interfaces';
 
 export interface AuthConfig {
   identityPoolId: string;
@@ -27,6 +28,10 @@ export const configureCognito = async ({
   });
 };
 export const logIn = async (email: string, password: string) => {
-  const user = await Auth.signIn(email, password);
+  const loggedInUser = await Auth.signIn(email, password);
+  const user: User = {
+    name: loggedInUser.attributes.given_name,
+    surname: loggedInUser.attributes.family_name,
+  };
   return user;
 };

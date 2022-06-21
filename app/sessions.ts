@@ -1,31 +1,34 @@
 import {writeFileSync} from 'fs';
 import * as ics from 'ics';
 
+import {SerializedSession, Session} from './interfaces';
+
 process.env.TZ = 'America/Los_Angeles';
 
 export const saveSessions = async (
-  sessions: any,
+  sessions: SerializedSession[],
   filename: string,
   format: string
 ) => {
   //   const {mySessions, myFavorites, myUserSessions} = sessions;
-  const booked = sessions.items
+  let booked: Session[] = sessions
     // .concat(myFavorites.items)
     // .concat(myUserSessions.items)
-    .map((session: any) => {
+    .map((session: SerializedSession) => {
+      const {venue, room} = session;
       return {
         name: session.alias,
         title: session.name,
         description: session.description,
-        location: session.room.venue.name + ': ' + session.room.name,
+        location:
+          venue && room ? venue.name + ': ' + room.name : 'Not specified',
         start: new Date(session.startTime),
         end: new Date(session.endTime),
       };
-    })
-    .sort(
-      (a: {start: Date}, b: {start: Date}) =>
-        a.start.getTime() - b.start.getTime()
-    );
+    });
+  booked = booked.sort(
+    (a: Session, b: Session) => a.start.getTime() - b.start.getTime()
+  );
 
   let content = '';
 
@@ -45,12 +48,16 @@ function formatAsCsv(sessions: any): string {
   const csvSanitize = (str: string) => str.replace(/,/g, '');
 
   return (
-    'name,title,start,end\n' +
+    'name,title,start,end,location\n' +
     sessions
       .map((session: any) => {
-        return `${session.name},${csvSanitize(session.title)},${
-          session.start
-        },${session.end}`;
+        if (!session) {
+          console.log('session is null');
+          return '';
+        } else
+          return `${session.name},${csvSanitize(session.title)},${
+            session.start
+          },${session.end},${csvSanitize(session.location)}`;
       })
       .join('\n')
   );

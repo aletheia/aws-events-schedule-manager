@@ -1,63 +1,44 @@
 #! /usr/bin/env node
 import inquirer from 'inquirer';
 import {Logger} from './logger';
-import {saveUserBookedSessions} from './commands/save_sessions';
 import {exitProgram} from './commands/exit';
 import {AppConfig, downloadConfig} from './config';
-import {authenticateUser} from './commands/log_in_user';
+import {authenticateUserCommand} from './commands/log_in_user';
+import {selectEvent} from './commands/select_event';
+
+import chalk from 'chalk';
+import {configureAppSync, fetchReservedSessions} from './graphql';
+
+import {Event, SerializedSession, User} from './interfaces';
+import {saveSessionCommand} from './commands/save_sessions';
+import {fetchSessionsCommand} from './commands/fetch_sessions';
+
+export interface CommandState {
+  user?: User;
+  event?: Event;
+  sessions?: SerializedSession[];
+}
+
+export const interactiveCommand = async (logger: Logger, config: AppConfig) => {
+  await authenticateUserCommand(logger, config);
+  const event = await selectEvent(logger);
+  configureAppSync(config);
+  const sessions = await fetchSessionsCommand(logger, config, event);
+  await saveSessionCommand(logger, config, sessions);
+
+  exitProgram(logger);
+};
 
 const init = async (config: AppConfig, logger: Logger) => {
-  let answers;
   try {
-    logger.log('re:Invent 2021 - Sessions Manager');
+    logger.log(chalk.cyan('AWS Events - Sessions Manager'));
   } catch (e) {
     const error = e as Error;
     logger.error(error.message);
   }
 
   try {
-    await authenticateUser(logger, config);
-    const saveUserSessionOption = 'Save user reserved sessions';
-    const exitOption = 'Exit';
-    answers = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'command',
-        message: 'What do you want to do?',
-        choices: [saveUserSessionOption, exitOption],
-      },
-    ]);
-
-    const doSaveSessions = async () => {
-      answers = await inquirer.prompt([
-        {
-          type: 'input',
-          name: 'fileName',
-          message: 'Enter the file name to save sessions to',
-        },
-        {
-          type: 'list',
-          name: 'format',
-          message: 'Enter the file format',
-          choices: ['CSV', 'ICS'],
-        },
-      ]);
-      const fileName = answers.fileName;
-      if (fileName.length === 0) {
-        logger.error('File name cannot be empty');
-      }
-      const format = answers.format;
-
-      await saveUserBookedSessions(logger, config, fileName, format);
-    };
-
-    switch (answers.command) {
-      case saveUserSessionOption:
-        await doSaveSessions();
-        break;
-      case 'Exit':
-        await exitProgram(logger);
-    }
+    await interactiveCommand(logger, config);
   } catch (e) {
     const error = e as Error;
     logger.error(error.message);
