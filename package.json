@@ -1,6 +1,6 @@
 {
   "name": "resm",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "RESM: Script to handle amazon reinvent 2021 personal schedule",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
