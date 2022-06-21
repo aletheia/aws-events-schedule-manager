@@ -1,8 +1,8 @@
-# RESM -- re:Invent 2021 Schedule Manager
+# RESM -- AWS Events Schedule Manager
 > A command line tool to manage your schedule for re:Invent 2021.
 
 ## Introduction 
-This year re:Invent is going to be back in person with a [brand new portal](https://portal.awsevents.com/events/reInvent2021/dashboard)
+AWS Events (re:Invent 2021, re:Mars 2022) are served through AWS Events [brand new portal](https://portal.awsevents.com/)
 Here are a series of utilities related to session handling.
 
 ## Export Sessions to CSV or ICS
