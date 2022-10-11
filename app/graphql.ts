@@ -5,6 +5,11 @@ import {Event, SerializedSession} from './interfaces';
 
 export const fetchEventsList = async (): Promise<{[k: string]: Event}> => {
   return {
+    reinvent2022: {
+      key: 'reinvent2022',
+      name: 're:Invent 2022',
+      uuid: '53b5de8d-7b9d-4fcc-a178-6433641075fe',
+    },
     remars2022: {
       key: 'remars2022',
       name: 're:Mars 2022',
