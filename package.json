@@ -1,6 +1,6 @@
 {
   "name": "resm",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "RESM: Script to handle AWS Events personal schedule",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
